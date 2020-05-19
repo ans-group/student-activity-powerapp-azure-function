@@ -14,7 +14,7 @@ module.exports = class GRAPH {
     // Configure Request Options
     const options = {
       method: 'POST',
-      uri: loginUrl + '/' + TENANT_ID + '/oauth2/v2.0/token',
+      uri: `${loginUrl}/${TENANT_ID}/oauth2/v2.0/token`,
       form: {
         client_id: CLIENT_ID,
         scope: 'https://graph.microsoft.com/.default',
@@ -44,6 +44,21 @@ module.exports = class GRAPH {
       if (!this.token) throw new Error('Please authenticate first')
 
       const uri = `${graphUrl}/v1.0/users?$filter=userType eq 'Member'&$select=displayName,givenName,surname,mail,usageLocation,id,userPrincipalName`
+      const data = await this._fetchAll(uri)
+
+      // Return Response
+      return data
+    } catch (err) {
+      throw new Error(err)
+    };
+  };
+
+  // Get Graph Group Members
+  async getGroupMembersById (groupId) {
+    try {
+      if (!this.token) throw new Error('Please authenticate first')
+
+      const uri = `${graphUrl}/v1.0/groups/${groupId}/members?$select=displayName,givenName,surname,mail,usageLocation,id,userPrincipalName`
       const data = await this._fetchAll(uri)
 
       // Return Response

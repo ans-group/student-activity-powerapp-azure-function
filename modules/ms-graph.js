@@ -43,7 +43,7 @@ module.exports = class GRAPH {
     try {
       if (!this.token) throw new Error('Please authenticate first')
 
-      const uri = `${graphUrl}/v1.0/users?$filter=userType eq 'Member'&$select=displayName,givenName,surname,mail,usageLocation,id,userPrincipalName`
+      const uri = `${graphUrl}/v1.0/users?$filter=userType eq 'Member'&$select=displayName,givenName,surname,mail,usageLocation,id,userPrincipalName,assignedLicenses`
       const data = await this._fetchAll(uri)
 
       // Return Response

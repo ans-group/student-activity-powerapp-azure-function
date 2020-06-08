@@ -4,6 +4,7 @@ const request = require('request-promise')
 const TENANT_ID = process.env.TENANT_ID
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
+const TEAMS_AGGREGATED_PERIOD = process.env.TEAMS_AGGREGATED_PERIOD
 
 const loginUrl = 'https://login.microsoftonline.com'
 const graphUrl = 'https://graph.microsoft.com'
@@ -69,11 +70,11 @@ module.exports = class GRAPH {
   };
 
   // Get Teams User Activity
-  async getTeamsUserActivityUserDetail () {
+  async getTeamsUserActivityUserDetail (days) {
     try {
       if (!this.token) throw new Error('Please authenticate first')
 
-      const uri = `${graphUrl}/beta/reports/getTeamsUserActivityUserDetail(period='D7')?$format=application/json`
+      const uri = `${graphUrl}/beta/reports/getTeamsUserActivityUserDetail(period='D${TEAMS_AGGREGATED_PERIOD}')?$format=application/json`
       const data = await this._fetchAll(uri)
 
       // Return data
